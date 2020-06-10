@@ -1,20 +1,26 @@
 package com.wd.view;
 
+import com.wd.controller.GameOperate;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class StaticCanvas extends JPanel {
-    public StaticCanvas() {
+    //添加按钮
+    private JButton up;
+    private JButton left;
+    private JButton down;
+    private JButton right;
+    private JButton start;
+    public StaticCanvas(GameOperate gameOperate) {
+        up = gameOperate.getUp();
+        left = gameOperate.getLeft();
+        down = gameOperate.getDown();
+        right = gameOperate.getRight();
+        start = gameOperate.getStart();
         setOpaque(false);
         this.setLayout(null);
         this.setBounds(0,0,400,600);
-        //添加按钮
-        JButton up = new ImageButton("img/up.png");
-        JButton left = new ImageButton("img/left.png");
-        JButton down = new ImageButton("img/down.png");
-        JButton right = new ImageButton("img/right.png");
-        JButton start = new ImageButton("img/start.png");
-
         up.setBounds(80,400,80,60);
         left.setBounds(20,446,80,60);
         down.setBounds(80,495,80,60);

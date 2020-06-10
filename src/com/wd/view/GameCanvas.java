@@ -15,8 +15,10 @@ public class GameCanvas extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        //主区域
-        g.fillRect(gameData.getX(),gameData.getY(),20,20);
+        for (Point point:gameData.getBlock().getPoints()) {
+            g.fillRect((int)(point.getX() +gameData.getX())*20,(int)(point.getX()+gameData.getY())*20,20,20);
+        }
+
 
     }
 }
