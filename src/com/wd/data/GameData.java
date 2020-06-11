@@ -5,17 +5,31 @@ import java.awt.*;
 public class GameData {
     private int x;
     private int y;
+    //方块
     private Block block;
+    //保存方块
+    private int[][] saveBlocks;
+    int deleteNum[];
     private static Block[] blocks = {
-            new Block(new int[]{-1, 0, 1, 2}, new int[]{0, 0, 0, 0}),
+            new Block(new int[]{0, 1, 0, 1}, new int[]{0, 0, 1, 1}),
             new Block(new int[]{-1, 0, 1, 1}, new int[]{0, 0, 0, 1}),
             new Block(new int[]{-1, 0, 1, -1}, new int[]{0, 0, 0, 1}),
     };
 
     public GameData() {
+        saveBlocks = new int[10][20];
+        initBlock();
+    }
+    private void initBlock() {
         x = 4;
         y = 0;
-        block = new Block(blocks[1]);
+        deleteNum = new int[20];
+        block = new Block(blocks[0]);
+    }
+    public void saveBlock(){
+        for (Point point:block.getPoints()){
+            saveBlocks[point.x+x][point.y+y+2] = 1;
+        }
     }
 
     /**
@@ -27,7 +41,9 @@ public class GameData {
         boolean flag = true;
         if (isHorizontal) {
             for (Point point : block.getPoints()) {
-                if ((point.x +x+ step) < 0 || (point.x+x + step) > 9) {
+                if ((point.x + x + step) < 0 || (point.x + x + step) > 9
+                        || saveBlocks[point.x + x+step][point.y + y + 2] != 0
+                ) {
                     flag = false;
                 }
             }
@@ -37,7 +53,11 @@ public class GameData {
 
         } else {
             for (Point point : block.getPoints()) {
-                if ( (point.y+y + step) > 17) {
+                if ( (point.y+y + step) > 17||saveBlocks[point.x+x][point.y+y+2+step]!=0) {
+                    saveBlock();
+                    if(isDelete())
+                        deleteLine();
+                    initBlock();
                     flag = false;
                 }
             }
@@ -46,6 +66,40 @@ public class GameData {
             }
         }
     }
+
+    /**
+     * 判断是否消行
+     */
+    public boolean  isDelete(){
+        boolean isDelete = false;
+        for (int i = 19; i >=2; i--) {
+            boolean isEmpty = false;
+            for (int j = 0; j < 10; j++) {
+                if(saveBlocks[j][i]==0){
+                    isEmpty = true;
+                    break;
+                }
+            }
+            if(!isEmpty){//消行
+                deleteNum[i-1] = deleteNum[i]+1;
+                isDelete = true;
+            }else{
+                deleteNum[i-1] = deleteNum[i];
+            }
+
+        }
+        return isDelete;
+    }
+
+    public void deleteLine(){
+        for (int i = 19; i >=2; i--) {
+            for (int j = 0; j < 10; j++) {
+                saveBlocks[j][i+deleteNum[i]] = saveBlocks[j][i];
+            }
+        }
+    }
+
+
 
     /**
      * 旋转
@@ -69,6 +123,10 @@ public class GameData {
     }
     public Block getBlock() {
         return block;
+    }
+
+    public int[][] getSaveBlocks() {
+        return saveBlocks;
     }
 
     public int getX() {

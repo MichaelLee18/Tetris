@@ -33,7 +33,7 @@ class AutoMove extends Thread{
             try {
                 gameData.change(false,1);
                 mainWindow.getGameCanvas().repaint();
-                sleep(1000);
+                sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
