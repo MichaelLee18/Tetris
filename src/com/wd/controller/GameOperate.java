@@ -4,8 +4,6 @@ import com.wd.data.GameData;
 import com.wd.view.ImageButton;
 import com.wd.view.MainWindow;
 
-import javax.swing.*;
-
 public class GameOperate {
     private GameData gameData;
     private MainWindow mainWindow;
@@ -19,7 +17,7 @@ public class GameOperate {
         up = new ImageButton("img/up.png") {
             @Override
             public void onclick() {
-                gameData.change(false,-1);
+                gameData.rotate();
                 mainWindow.getGameCanvas().repaint();
             }
         };
